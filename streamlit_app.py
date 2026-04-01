@@ -191,3 +191,53 @@ if name:
         col4.metric("기술수", len(tech_stack))
 else:
     st.info("📝 정보를 입력하면 요약이 표시됩니다")
+
+st.divider()
+
+# ==================== 데이터 시각화 예제 ====================
+st.subheader("📊 데이터 시각화 예제")
+
+import matplotlib.pyplot as plt
+import matplotlib.font_manager as fm
+import seaborn as sns
+import plotly.graph_objects as go
+import numpy as np
+
+# 한글 폰트 설정
+font_path = '/workspaces/test1/fonts/NotoSansKR-Bold.ttf'
+font_prop = fm.FontProperties(fname=font_path)
+font_name = font_prop.get_name()
+fm.fontManager.addfont(font_path)
+plt.rcParams['font.family'] = font_name
+plt.rcParams['axes.unicode_minus'] = False
+
+# 샘플 데이터 생성
+np.random.seed(42)
+x = np.linspace(0, 10, 100)
+y = np.sin(x) + np.random.normal(0, 0.1, 100)
+
+# Matplotlib 예제
+st.write("**Matplotlib: 선 그래프**")
+fig, ax = plt.subplots()
+ax.plot(x, y, label='사인파 + 노이즈')
+ax.set_title('사인파 데이터 시각화')
+ax.set_xlabel('시간')
+ax.set_ylabel('값')
+ax.legend()
+st.pyplot(fig)
+
+# Seaborn 예제
+st.write("**Seaborn: 히트맵**")
+data = np.random.randn(10, 10)
+fig, ax = plt.subplots()
+sns.heatmap(data, annot=True, cmap='coolwarm', ax=ax)
+ax.set_title('랜덤 데이터 히트맵')
+st.pyplot(fig)
+
+# Plotly 예제
+st.write("**Plotly: 바 차트**")
+categories = ['카테고리 A', '카테고리 B', '카테고리 C', '카테고리 D']
+values = np.random.randint(10, 100, 4)
+fig = go.Figure(data=[go.Bar(x=categories, y=values)])
+fig.update_layout(title='카테고리별 값 비교', xaxis_title='카테고리', yaxis_title='값')
+st.plotly_chart(fig)
