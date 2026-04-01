@@ -1,330 +1,193 @@
 import streamlit as st
-import pandas as pd
-import numpy as np
-from datetime import datetime, time
-import plotly.express as px
 
 # 페이지 설정
 st.set_page_config(
-    page_title="Streamlit 요소 완전 가이드",
-    page_icon="🎨",
+    page_title="자기소개",
+    page_icon="👤",
     layout="wide"
 )
 
-# 제목 및 소개
-st.title("🎨 Streamlit 요소들 완전 가이드")
-st.markdown("Streamlit의 다양한 요소들과 위젯들을 한눈에 볼 수 있습니다!")
+# ==================== 프로필 헤더 ====================
+st.title("👤 나의 소개")
 
-# 목차
-st.sidebar.markdown("## 📑 목차")
-page = st.sidebar.radio(
-    "섹션 선택:",
-    ["📝 텍스트 요소", "🎛️ 입력 위젯", "📊 데이터 표시", "📸 미디어", "📐 레이아웃", "🎯 상태 메시지"]
-)
+col1, col2 = st.columns([1, 2])
 
-# ==================== 1. 텍스트 요소 ====================
-if page == "📝 텍스트 요소":
-    st.header("텍스트 요소들")
-    
-    with st.expander("더 알아보기", expanded=True):
-        st.subheader("1. Header - 큰 제목")
-        st.write("위에 보이는 것이 header입니다")
-        
-        st.subheader("2. Subheader - 중간 제목")
-        st.write("위에 보이는 것이 subheader입니다")
-        
-        st.markdown("### 3. Markdown - 마크다운 포맷")
-        st.markdown("""
-        - **굵은 텍스트**
-        - *이탤릭 텍스트*
-        - `코드 블락`
-        - [링크](https://streamlit.io)
-        - ~~취소선~~
-        """)
-        
-        st.divider()
-        
-        st.write("### 4. Write - 일반 텍스트")
-        st.write("write()는 가장 유연한 텍스트 요소입니다")
-        st.write("📌 여러 타입을 표시할 수 있습니다:")
-        st.write(123)
-        st.write({"key": "value", "숫자": 42})
-        st.write([1, 2, 3, 4, 5])
-        
-        st.divider()
-        
-        st.code("""
-# Python 코드 예시
-def hello_world():
-    print("안녕하세요, Streamlit!")
-        """, language="python")
-        
-        st.divider()
-        
-        st.latex(r"e^{i\pi} + 1 = 0")
+with col1:
+    st.subheader("백쌤 사진")
+    st.info("📷 프로필 사진을 여기에 표시합니다")
 
-# ==================== 2. 입력 위젯 ====================
-elif page == "🎛️ 입력 위젯":
-    st.header("입력 위젯들")
+with col2:
+    st.subheader("기본 정보")
     
-    col1, col2 = st.columns(2)
-    
-    with col1:
-        st.subheader("텍스트 입력")
-        name = st.text_input("이름을 입력하세요:", placeholder="예: 김철수")
-        email = st.text_area("이메일 주소:", placeholder="email@example.com")
-        if name:
-            st.info(f"👋 안녕하세요, {name}님!")
-    
-    with col2:
-        st.subheader("숫자 입력")
-        age = st.number_input("나이를 입력하세요:", min_value=1, max_value=120, step=1)
-        height = st.slider("키(cm):", min_value=100, max_value=220, step=1)
-        st.write(f"입력된 나이: {age}세, 키: {height}cm")
-    
-    st.divider()
-    
-    col1, col2 = st.columns(2)
-    
-    with col1:
-        st.subheader("선택 위젯")
-        checkbox = st.checkbox("동의합니다", value=False)
-        st.write(f"체크박스 상태: {checkbox}")
-        
-        option = st.radio("선택하세요:", ["선택지 1", "선택지 2", "선택지 3"])
-        st.write(f"선택된 것: {option}")
-    
-    with col2:
-        st.subheader("드롭다운 및 다중선택")
-        city = st.selectbox("도시 선택:", ["서울", "부산", "대구", "인천", "광주"])
-        st.write(f"선택된 도시: {city}")
-        
-        hobbies = st.multiselect(
-            "취미를 선택하세요(복수):",
-            ["독서", "영화감상", "운동", "게임", "음악", "요리"]
-        )
-        st.write(f"선택된 취미: {hobbies}")
-    
-    st.divider()
-    
-    col1, col2 = st.columns(2)
-    
-    with col1:
-        st.subheader("날짜 및 시간")
-        date = st.date_input("날짜 선택:", value=datetime.today())
-        st.write(f"선택된 날짜: {date}")
-    
-    with col2:
-        st.subheader("시간 선택")
-        time_input = st.time_input("시간 선택:", value=time(12, 0))
-        st.write(f"선택된 시간: {time_input}")
-    
-    st.divider()
-    
-    st.subheader("버튼 및 폼")
-    col1, col2, col3 = st.columns(3)
-    
-    if col1.button("🔘 클릭 버튼", use_container_width=True):
-        st.success("버튼을 클릭했습니다!")
-    
-    if col2.button("❌ 다른 버튼", use_container_width=True):
-        st.warning("이 버튼도 클릭 가능합니다!")
-    
-    if col3.download_button(
-        "⬇️ 파일 다운로드",
-        data="Hello Streamlit",
-        file_name="sample.txt",
-        use_container_width=True
-    ):
-        st.info("파일 다운로드됨")
-    
-    st.subheader("폼 (Form)")
-    with st.form("my_form"):
-        st.write("폼 내부 입력:")
-        form_name = st.text_input("이름:")
-        form_age = st.slider("나이:", 1, 100)
-        form_submitted = st.form_submit_button("제출")
-        
-        if form_submitted:
-            st.write(f"제출되었습니다: {form_name}, {form_age}세")
-
-# ==================== 3. 데이터 표시 ====================
-elif page == "📊 데이터 표시":
-    st.header("데이터 표시 요소들")
-    
-    # 샘플 데이터 생성
-    df = pd.DataFrame({
-        "이름": ["서울", "부산", "대구", "인천", "광주"],
-        "인구": [9776000, 3404000, 2444000, 2886000, 1457000],
-        "면적(km²)": [605.2, 765.8, 884.2, 1061.8, 501.3],
-        "GDP(조원)": [914, 330, 248, 285, 180]
-    })
-    
-    col1, col2 = st.columns(2)
-    
-    with col1:
-        st.subheader("Dataframe 표시")
-        st.dataframe(df, use_container_width=True, height=300)
-    
-    with col2:
-        st.subheader("테이블 표시")
-        st.table(df)
-    
-    st.divider()
-    
-    col1, col2, col3 = st.columns(3)
-    
-    with col1:
-        st.metric(label="총 인구", value="1,996만명", delta="↑ 2.3%")
-    
-    with col2:
-        st.metric(label="평균 면적", value="843km²", delta="↓ 1.2%")
-    
-    with col3:
-        st.metric(label="총 GDP", value="1,957조원", delta="↑ 5.8%")
-    
-    st.divider()
-    
-    st.subheader("JSON 데이터")
-    json_data = {"서울": {"인구": 977, "GDP": 914}, "부산": {"인구": 340, "GDP": 330}}
-    st.json(json_data)
-    
-    st.divider()
-    
-    st.subheader("차트")
-    col1, col2 = st.columns(2)
-    
-    with col1:
-        fig1 = px.bar(df, x="이름", y="인구", title="도시별 인구")
-        st.plotly_chart(fig1, use_container_width=True)
-    
-    with col2:
-        fig2 = px.pie(df, names="이름", values="GDP", title="도시별 GDP")
-        st.plotly_chart(fig2, use_container_width=True)
-
-# ==================== 4. 미디어 ====================
-elif page == "📸 미디어":
-    st.header("미디어 요소들")
-    
-    col1, col2 = st.columns(2)
-    
-    with col1:
-        st.subheader("이미지 표시")
-        st.image("https://emoji.aranja.com/static/emoji-data/img-apple-160/1f308.png", 
-                width=200, caption="Streamlit 로고")
-    
-    with col2:
-        st.subheader("이미지 컬럼 옵션")
-        images = {
-            "🎨": "https://emoji.aranja.com/static/emoji-data/img-apple-160/1f308.png",
-            "🎈": "https://emoji.aranja.com/static/emoji-data/img-apple-160/1f388.png",
-            "🎉": "https://emoji.aranja.com/static/emoji-data/img-apple-160/1f389.png",
-        }
-        for name, url in images.items():
-            st.image(url, width=100, caption=name)
-
-# ==================== 5. 레이아웃 ====================
-elif page == "📐 레이아웃":
-    st.header("레이아웃 요소들")
-    
-    st.subheader("1. 컬럼 (Columns)")
-    col1, col2, col3 = st.columns(3)
-    with col1:
-        st.info("컬럼 1\n너비가 동일합니다")
-    with col2:
-        st.success("컬럼 2\n자동 배치됩니다")
-    with col3:
-        st.warning("컬럼 3\n3개 열 레이아웃")
-    
-    st.divider()
-    
-    st.subheader("2. 비율을 지정한 컬럼")
-    col1, col2, col3 = st.columns([2, 3, 1])
-    with col1:
-        st.info("비율 2")
-    with col2:
-        st.success("비율 3 (가장 넓음)")
-    with col3:
-        st.warning("비율 1 (가장 좁음)")
-    
-    st.divider()
-    
-    st.subheader("3. 탭 (Tabs)")
-    tab1, tab2, tab3 = st.tabs(["탭 1️⃣", "탭 2️⃣", "탭 3️⃣"])
-    
-    with tab1:
-        st.write("첫 번째 탭 내용")
-        st.info("탭을 클릭하면 콘텐츠가 변경됩니다")
-    
-    with tab2:
-        st.write("두 번째 탭 내용")
-        st.success("각 탭은 독립적인 상태를 유지합니다")
-    
-    with tab3:
-        st.write("세 번째 탭 내용")
-        st.warning("탭은 강력한 레이아웃 도구입니다")
-    
-    st.divider()
-    
-    st.subheader("4. 확장기 (Expander)")
-    with st.expander("더 보기 🔽"):
-        st.write("숨겨진 콘텐츠입니다")
-        st.code("st.expander('제목')")
-    
-    with st.expander("추가 정보"):
-        st.write("이것도 숨겨진 콘텐츠입니다")
-    
-    st.divider()
-    
-    st.subheader("5. 컨테이너")
-    with st.container(border=True):
-        st.write("경계가 있는 컨테이너")
-        st.button("컨테이너 내 버튼")
-
-# ==================== 6. 상태 메시지 ====================
-elif page == "🎯 상태 메시지":
-    st.header("상태 메시지들")
-    
-    col1, col2 = st.columns(2)
-    
-    with col1:
-        st.subheader("긍정/정보 메시지")
-        st.success("✅ 성공! 작업이 완료되었습니다")
-        st.info("ℹ️ 정보: 알아두면 좋은 정보입니다")
-    
-    with col2:
-        st.subheader("주의/오류 메시지")
-        st.warning("⚠️ 주의: 주의가 필요합니다")
-        st.error("❌ 오류: 문제가 발생했습니다")
-    
-    st.divider()
-    
-    st.subheader("진행 상황 표시")
-    col1, col2 = st.columns(2)
-    
-    with col1:
-        st.write("Progress Bar:")
-        progress_bar = st.progress(0)
-        for i in range(101):
-            progress_bar.progress(i)
-    
-    with col2:
-        st.write("Spinner:")
-        with st.spinner("로딩 중..."):
-            import time
-            time.sleep(2)
-        st.success("완료!")
-    
-    st.divider()
-    
-    st.subheader("예외 메시지")
-    st.write("예외 정보를 표시할 수 있습니다:")
-    try:
-        result = 1 / 0
-    except ZeroDivisionError as e:
-        st.exception(e)
+    name = st.text_input("이름", placeholder="예: 백영희", value="백영희")
+    email = st.text_input("이메일", placeholder="example@email.com", value="baekyounghee@example.com")
+    phone = st.text_input("전화번호", placeholder="010-1234-5678", value="010-1234-5678")
+    location = st.text_input("거주지역", placeholder="예: 대한민국 서울시 강남구", value="대한민국 서울시 강남구")
 
 st.divider()
-st.markdown("---")
-st.write("💡 **팁**: Streamlit은 Python 파일이 수정되면 자동으로 새로고침됩니다!")
-st.write("📚 [공식 문서](https://docs.streamlit.io/)에서 더 많은 정보를 얻을 수 있습니다.")
+
+# ==================== 자기소개 ====================
+st.subheader("📝 자기소개")
+introduction = st.text_area(
+    "자신을 소개해주세요",
+    height=180,
+    value="안녕하세요! 저는 보건 분야에서 10년 이상의 경력을 가진 전문가입니다. 숙명여자대학교에서 보건학 석사를 졸업하고, 다양한 의료기관과 보건정책 분야에서 근무하며 건강관리와 의료서비스 개선에 기여해왔습니다. 데이터 분석과 인공지능 기술을 활용하여 보건 분야의 효율성을 높이는 데 관심이 많으며, 항상 환자 중심의 따뜻한 의료서비스를 추구합니다."
+)
+
+st.divider()
+
+# ==================== 경력 및 경험 ====================
+st.subheader("💼 경력 및 경험")
+
+col1, col2 = st.columns(2)
+
+with col1:
+    st.write("**경력**")
+    experience = st.number_input("경력 (년)", min_value=0, max_value=60, step=1, value=10)
+
+with col2:
+    st.write("**직급**")
+    position = st.selectbox("직급", ["인턴", "사원", "주임", "대리", "과장", "부장", "이사", "기타"], index=5)
+
+col1, col2 = st.columns(2)
+
+with col1:
+    company = st.text_input("현재/이전 회사", placeholder="회사명", value="서울대학교병원")
+
+with col2:
+    job_title = st.text_input("직무/직책", placeholder="예: 개발자, 디자이너", value="보건관리과장")
+
+st.divider()
+
+# ==================== 기술 스택 ====================
+st.subheader("🛠️ 기술 스택")
+
+tech_stack = st.multiselect(
+    "사용 가능한 기술/언어를 선택하세요",
+    ["Python", "JavaScript", "Java", "C++", "C#", "Go", "Rust", "PHP", "Ruby",
+     "React", "Vue", "Angular", "Django", "Flask", "FastAPI", "Node.js",
+     "SQL", "MongoDB", "PostgreSQL", "MySQL", "AWS", "GCP", "Azure",
+     "Docker", "Kubernetes", "Git", "GitHub", "GitLab", "R", "SAS", "SPSS", 
+     "Tableau", "Power BI", "Excel"],
+    default=["Python", "SQL", "R", "SAS", "SPSS", "Tableau", "Power BI", "Excel", "Git", "GitHub"]
+)
+
+if tech_stack:
+    st.write("**선택된 기술:**")
+    cols = st.columns(3)
+    for idx, tech in enumerate(tech_stack):
+        cols[idx % 3].write(f"✓ {tech}")
+
+st.divider()
+
+# ==================== 교육 배경 ====================
+st.subheader("🎓 교육 배경")
+
+col1, col2 = st.columns(2)
+
+with col1:
+    education = st.selectbox("최종 학력", ["고등학교", "학사", "석사", "박사", "기타"], index=2)
+
+with col2:
+    school = st.text_input("학교명", placeholder="대학교명", value="숙명여자대학교")
+
+major = st.text_input("전공", placeholder="예: 컴퓨터공학", value="보건")
+
+st.divider()
+
+# ==================== 포트폴리오 ====================
+st.subheader("🎨 포트폴리오")
+
+portfolio_count = st.number_input("포트폴리오 항목 개수", min_value=0, max_value=10, step=1, value=3)
+
+for i in range(int(portfolio_count)):
+    with st.expander(f"프로젝트 {i+1}"):
+        if i == 0:
+            project_name = st.text_input(f"프로젝트명", key=f"project_{i}", value="병원 환자 관리 시스템 개발")
+            project_desc = st.text_area(f"프로젝트 설명", height=80, key=f"desc_{i}", 
+                                      value="병원 환자 정보를 효율적으로 관리할 수 있는 웹 기반 시스템을 개발했습니다. 환자 등록, 진료 기록 관리, 약물 처방 등의 기능을 포함합니다.")
+            project_url = st.text_input(f"프로젝트 링크", key=f"url_{i}", value="https://github.com/baekyounghee/patient-management")
+            project_tech = st.text_input(f"사용 기술", key=f"tech_{i}", value="Python, Django, PostgreSQL, React")
+        elif i == 1:
+            project_name = st.text_input(f"프로젝트명", key=f"project_{i}", value="보건 데이터 분석 대시보드")
+            project_desc = st.text_area(f"프로젝트 설명", height=80, key=f"desc_{i}", 
+                                      value="지역별 건강지표 데이터를 분석하여 시각화하는 대시보드를 구축했습니다. 코로나19 확진자 추이, 백신 접종률 등의 정보를 실시간으로 모니터링할 수 있습니다.")
+            project_url = st.text_input(f"프로젝트 링크", key=f"url_{i}", value="https://github.com/baekyounghee/health-dashboard")
+            project_tech = st.text_input(f"사용 기술", key=f"tech_{i}", value="Python, Streamlit, Pandas, Plotly, SQL")
+        elif i == 2:
+            project_name = st.text_input(f"프로젝트명", key=f"project_{i}", value="원격 의료 상담 플랫폼")
+            project_desc = st.text_area(f"프로젝트 설명", height=80, key=f"desc_{i}", 
+                                      value="비대면 진료를 위한 화상 상담 플랫폼을 개발했습니다. 실시간 채팅, 화상 통화, 처방전 전송 등의 기능을 제공합니다.")
+            project_url = st.text_input(f"프로젝트 링크", key=f"url_{i}", value="https://github.com/baekyounghee/telemedicine-platform")
+            project_tech = st.text_input(f"사용 기술", key=f"tech_{i}", value="React, Node.js, WebRTC, MongoDB, AWS")
+        else:
+            project_name = st.text_input(f"프로젝트명", key=f"project_{i}")
+            project_desc = st.text_area(f"프로젝트 설명", height=80, key=f"desc_{i}")
+            project_url = st.text_input(f"프로젝트 링크", key=f"url_{i}")
+            project_tech = st.text_input(f"사용 기술", key=f"tech_{i}")
+
+st.divider()
+
+# ==================== 소셜 미디어 ====================
+st.subheader("🔗 소셜 미디어 및 링크")
+
+col1, col2 = st.columns(2)
+
+with col1:
+    github = st.text_input("GitHub", placeholder="https://github.com/username", value="https://github.com/baekyounghee")
+    linkedin = st.text_input("LinkedIn", placeholder="https://linkedin.com/in/username", value="https://linkedin.com/in/baekyounghee")
+
+with col2:
+    twitter = st.text_input("Twitter", placeholder="https://twitter.com/username", value="https://twitter.com/baekyounghee")
+    blog = st.text_input("블로그", placeholder="https://blog.example.com", value="https://baekyounghee-healthcare.tistory.com")
+
+st.divider()
+
+# ==================== 취미 및 관심사 ====================
+st.subheader("🎯 취미 및 관심사")
+
+hobbies = st.multiselect(
+    "관심사를 선택하세요",
+    ["독서", "영화감상", "운동", "게임", "음악", "요리", "여행", "사진", "그림", "글쓰기",
+     "코딩", "팟캐스트", "인공지능", "딥러닝", "데이터 분석", "요가", "기타"],
+    default=["독서", "요가", "여행", "사진", "글쓰기", "데이터 분석"]
+)
+
+if hobbies:
+    st.write("**선택된 관심사:**")
+    st.write(", ".join(hobbies))
+
+st.divider()
+
+# ==================== 제출 버튼 ====================
+col1, col2, col3 = st.columns(3)
+
+with col1:
+    if st.button("📤 제출", use_container_width=True):
+        if name:
+            st.success(f"✅ {name}님의 자기소개가 저장되었습니다!")
+        else:
+            st.error("❌ 이름을 입력해주세요")
+
+with col2:
+    if st.button("🔄 초기화", use_container_width=True):
+        st.info("ℹ️ 페이지를 새로고침하시면 초기화됩니다")
+
+with col3:
+    if st.button("📥 다운로드", use_container_width=True):
+        st.info("ℹ️ 다운로드 기능 준비 중입니다")
+
+st.divider()
+
+# ==================== 요약 정보 --==================
+st.subheader("📋 입력 정보 요약")
+
+if name:
+    with st.container(border=True):
+        col1, col2, col3, col4 = st.columns(4)
+        col1.metric("이름", name if name else "-")
+        col2.metric("직급", position if position else "-")
+        col3.metric("경력", f"{experience}년" if experience else "-")
+        col4.metric("기술수", len(tech_stack))
+else:
+    st.info("📝 정보를 입력하면 요약이 표시됩니다")
