@@ -206,10 +206,6 @@ import numpy as np
 # 한글 폰트 설정
 font_path = '/workspaces/test1/fonts/NotoSansKR-Bold.ttf'
 font_prop = fm.FontProperties(fname=font_path)
-font_name = font_prop.get_name()
-fm.fontManager.addfont(font_path)
-plt.rcParams['font.family'] = font_name
-plt.rcParams['axes.unicode_minus'] = False
 
 # 샘플 데이터 생성
 np.random.seed(42)
@@ -220,10 +216,10 @@ y = np.sin(x) + np.random.normal(0, 0.1, 100)
 st.write("**Matplotlib: 선 그래프**")
 fig, ax = plt.subplots()
 ax.plot(x, y, label='사인파 + 노이즈')
-ax.set_title('사인파 데이터 시각화')
-ax.set_xlabel('시간')
-ax.set_ylabel('값')
-ax.legend()
+ax.set_title('사인파 데이터 시각화', fontproperties=font_prop)
+ax.set_xlabel('시간', fontproperties=font_prop)
+ax.set_ylabel('값', fontproperties=font_prop)
+ax.legend(prop=font_prop)
 st.pyplot(fig)
 
 # Seaborn 예제
@@ -231,7 +227,7 @@ st.write("**Seaborn: 히트맵**")
 data = np.random.randn(10, 10)
 fig, ax = plt.subplots()
 sns.heatmap(data, annot=True, cmap='coolwarm', ax=ax)
-ax.set_title('랜덤 데이터 히트맵')
+ax.set_title('랜덤 데이터 히트맵', fontproperties=font_prop)
 st.pyplot(fig)
 
 # Plotly 예제
